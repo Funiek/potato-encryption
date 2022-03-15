@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 import sys
-import numpy as np
-
 
 def encrypt(value:str,key:str):
     key_arr = key.split('-')
