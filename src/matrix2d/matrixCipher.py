@@ -3,9 +3,6 @@
 def encrypt(message: str, key: str):
     k_array = getArrayKey(key)
     message = message.replace(" ", '')
-    n = len(k_array)
-    m = (len(message) * 2 - 1) // n
-
     ret = []
 
     for y in k_array:
@@ -20,8 +17,6 @@ def encrypt(message: str, key: str):
 def decrypt(message: str, key: str):
     print(key)
     message = message.replace(" ", '')
-    n = len(key)
-    m = (len(message) * 2 - 1) // n
     k_array = getArrayKey(key)
 
     result = [''] * len(message)
