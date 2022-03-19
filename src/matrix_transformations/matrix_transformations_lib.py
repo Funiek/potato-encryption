@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import sys
 
-def encrypt(value:str,key:str):
+def encrypt_decrypt(value:str,key:str):
     key_arr = key.split('-')
     
     #specifying dimensions
@@ -13,15 +13,23 @@ def encrypt(value:str,key:str):
     else:
         rows_count = temp+1
 
+    print(str(rows_count)+" "+str(column_count))
+
     #2D matrix declaration
     inf = float('inf')
-    arr = [[inf for x in range(rows_count)] for y in range(column_count)]
+    arr = [[inf for x in range(column_count)] for y in range(rows_count)]
+    
+
+    print('\n'.join([''.join(['{:4}'.format(item) for item in row]) 
+        for row in arr]))
     
     #filling matrix with data from value
     row=0
     col=0
+    print("LENGTH OF VALUE: "+str(len(value)))
     for x in range(len(value)):
-        arr[row][col] = value[x]
+        print("X: "+str(x)+" Row: "+str(row)+" Col: "+str(col))
+        arr[row][col] = str(value[int(x)])
         
         col = col + 1
         if col == column_count:
@@ -42,6 +50,10 @@ def encrypt(value:str,key:str):
     return res
 
 
-res = encrypt(sys.argv[1],sys.argv[2])
 
-print(res)
+
+res = encrypt_decrypt(sys.argv[1],sys.argv[2])
+
+res2 = encrypt_decrypt(res,sys.argv[2])
+
+print(res2)
