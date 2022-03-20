@@ -1,36 +1,73 @@
+from glob import glob
 import os
 import tkinter as tk
 from tkinter import BOTTOM, CENTER, LEFT, N, NW, RIGHT, TOP, Canvas, filedialog, Text
+import fence.fence_lib as fl
+import matrix_transformations.matrix_transformations_lib as mt
+import matrix2d.matrixCipher as mc
 
-
+encryption_type = None
 
 def init_window(w:int,h:int):
-    def perform_fence():
+    def perform_algorithm():
         INPUT_DATA = input.get("1.0", "end-1c")
         KEY_DATA = key.get("1.0", "end-1c")
+        res = ''
+
+        if encryption_type == 'fence':
+            res = fl.encrypt(INPUT_DATA, KEY_DATA)
+        elif encryption_type == 'matrix_transformations':
+            res = mt.encrypt_decrypt(INPUT_DATA, KEY_DATA)
+        else:
+            res = mc.encrypt(INPUT_DATA, KEY_DATA)
+        popup_window(res)
     
-    def perform_matrix_transformations():
-        INPUT_DATA = input.get("1.0", "end-1c")
-        KEY_DATA = key.get("1.0", "end-1c")
     
-    def perform_matrix_cipher():
-        INPUT_DATA = input.get("1.0", "end-1c")
-        KEY_DATA = key.get("1.0", "end-1c")
-    
-    def call_back():
-        popup_window()
-    
-    def popup_window():
+    def popup_window(result):
+        def perform_decryption():
+            INPUT_DATA = label.cget("text")
+            KEY_DATA = key.get("1.0", "end-1c")
+            print(INPUT_DATA+KEY_DATA)
+            if encryption_type == 'fence':
+                res = fl.decrypt(INPUT_DATA, KEY_DATA)
+            elif encryption_type == 'matrix_transformations':
+                res = mt.encrypt_decrypt(INPUT_DATA, KEY_DATA)
+            else:
+                res = mc.decrypt(INPUT_DATA, KEY_DATA)
+
+            label.config(text=str(res))
+
         window = tk.Toplevel()
 
         label = tk.Label(window, text="Output")
         label.pack(fill='x', padx=50, pady=5)
 
-        label = tk.Label(window, text="1234")
+        label = tk.Label(window, text=str(result))
         label.pack(fill='x', padx=50, pady=5)
 
-        button_close = tk.Button(window, text="Close", command=window.destroy)
-        button_close.pack(fill='x')
+        decrypt_button = tk.Button(window, text="Decrypt", command=lambda:perform_decryption())
+        decrypt_button.pack(fill='x')
+
+        close_button = tk.Button(window, text="Close", command=window.destroy)
+        close_button.pack(fill='x')
+
+
+    def switch_fence():
+        global encryption_type
+        encryption_type='fence'
+        submit_button["state"] = "normal"
+
+
+    def switch_matrix_transformations():
+        global encryption_type
+        encryption_type='matrix_transformations'
+        submit_button["state"] = "normal"
+
+
+    def switch_matrix_cipher():
+        global encryption_type
+        encryption_type='matrix_cipher'
+        submit_button["state"] = "normal"
 
     root = tk.Tk()
     root.title("Potato Encryption")
@@ -45,7 +82,7 @@ def init_window(w:int,h:int):
     buttons_frame = tk.Frame(frame, bg="#ffffff")
     buttons_frame.pack(side = TOP,pady=(10,0))
     
-    fence_button = tk.Button(buttons_frame, text="Rail Fence", command=call_back)
+    fence_button = tk.Button(buttons_frame, text="Rail Fence", command=switch_fence)
     fence_button.pack(
         side = LEFT,
         ipadx=5,
@@ -54,7 +91,7 @@ def init_window(w:int,h:int):
         pady=(0,10)
     )
     
-    matrix_trans_button = tk.Button(buttons_frame, text="Matrix Transformation", command=call_back)
+    matrix_trans_button = tk.Button(buttons_frame, text="Matrix Transformation", command=switch_matrix_transformations)
     matrix_trans_button.pack(
         side = LEFT,
         ipadx=5,
@@ -63,7 +100,7 @@ def init_window(w:int,h:int):
         pady=(0,10)
     )
     
-    matrix_cipher_button = tk.Button(buttons_frame, text="Matrix Cipher", command=call_back)
+    matrix_cipher_button = tk.Button(buttons_frame, text="Matrix Cipher", command=switch_matrix_cipher)
     matrix_cipher_button.pack(
         side = LEFT,
         ipadx=5,
@@ -98,7 +135,7 @@ def init_window(w:int,h:int):
     
     actions_frame = tk.Frame(frame, bg="#ffffff")
     actions_frame.pack(side=BOTTOM, anchor= tk.SE,pady=(0,10))
-    submit_button = tk.Button(actions_frame, text="Encrypt", command=lambda:take_input())
+    submit_button = tk.Button(actions_frame, text="Encrypt", command=lambda:perform_algorithm())
     submit_button.pack(
         side = RIGHT,
         ipadx=5,
@@ -107,6 +144,7 @@ def init_window(w:int,h:int):
         pady=(0,10),
         expand=True
     )
+    submit_button["state"] = "disabled"
     exit_button = tk.Button(actions_frame, text="Exit", command=root.destroy)
     exit_button.pack(
         side = RIGHT,
