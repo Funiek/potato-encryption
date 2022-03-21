@@ -12,7 +12,7 @@ encryption_type = None
 # Funkcja inicjalizacji okienka aplikacji przyjmująca wysokość -> w i szerokość -> h
 def init_window(w:int,h:int):
     # Funkcja w której wykonywany jest algorytm i wywoływane jest okno z wynikiem
-    def perform_algorithm():
+    def perform_encryption():
         # Przypisanie wejścia tekstu do enkrypcji do zmiennej
         INPUT_DATA = input.get("1.0", "end-1c")
         # Przypisanie klucza do zmiennej
@@ -26,14 +26,55 @@ def init_window(w:int,h:int):
         # Jeżeli została wybrana wersja 'matrix_transformations' to wykonaj algorytm ekrypcji Przestawienia Macierzowe z przykładu A
         elif encryption_type == 'matrix_transformations':
             res = mt.encrypt(INPUT_DATA, KEY_DATA)
-        # Jeżeli została wybrana wersja 'matrix_transformations' to wykonaj algorytm ekrypcji Przestawienia Macierzowe z przykładu B
+        # Jeżeli została wybrana wersja 'matrix_cipher' to wykonaj algorytm ekrypcji Przestawienia Macierzowe z przykładu B
         else:
             res = mc.encrypt(INPUT_DATA, KEY_DATA)
         # Pokaż okno z wynikiem
-        popup_window(res)
+        popup_window_encrypt(res)
+    
+    # Funkcja w której wykonywany jest algorytm i wywoływane jest okno z wynikiem 
+    def perform_decryption():
+        # Przypisanie wejścia tekstu do enkrypcji do zmiennej
+        INPUT_DATA = input.get("1.0", "end-1c")
+        # Przypisanie klucza do zmiennej
+        KEY_DATA = key.get("1.0", "end-1c")
+        # Przygotowanie zmiennej na wynik
+        res = ''
+
+        # Jeżeli została wybrana wersja 'fence' to wykonaj algorytm ekrypcji Rail Fence
+        if encryption_type == 'fence':
+            res = fl.decrypt(INPUT_DATA, KEY_DATA)
+        # Jeżeli została wybrana wersja 'matrix_transformations' to wykonaj algorytm ekrypcji Przestawienia Macierzowe z przykładu A
+        elif encryption_type == 'matrix_transformations':
+            res = mt.decrypt(INPUT_DATA, KEY_DATA)
+        # Jeżeli została wybrana wersja 'matrix_cipher' to wykonaj algorytm ekrypcji Przestawienia Macierzowe z przykładu B
+        else:
+            res = mc.decrypt(INPUT_DATA, KEY_DATA)
+        # Pokaż okno z wynikiem
+        popup_window_decrypt(res)
+        
+    def popup_window_decrypt(result):
+        # Deklaracja okna typu popup
+        window = tk.Toplevel()
+
+        # Deklaracja etykiety "Output"
+        label = tk.Label(window, text="Output")
+        # Konfiguracjia wyglądu etykiety
+        # Odstępy horyzontalne:50 jednostek, odstępy wertykalne: 5 jednostek
+        label.pack(fill='x', padx=50, pady=5)
+
+        # Deklaracja etykiety wyniku enkrypcji
+        label = tk.Label(window, text=str(result))
+        # Konfiguracjia wyglądu etykiety
+        # Odstępy horyzontalne:50 jednostek, odstępy wertykalne: 5 jednostek
+        label.pack(fill='x', padx=50, pady=5)
+
+        # Przycisk zamykający okno po kliknięciu
+        close_button = tk.Button(window, text="Close", command=window.destroy)
+        close_button.pack(fill='x')
     
     # Funkcja do wywołania okna typu popup z wynikiem enkrypcji
-    def popup_window(result):
+    def popup_window_encrypt(result):
         # Funkcja wykonująca dekrypcję i zamieniająca tekst popupu na wynik dekrypcji
         def perform_decryption():
             # Przypisanie wejścia tekstu do enkrypcji do zmiennej
@@ -46,7 +87,7 @@ def init_window(w:int,h:int):
             # Jeżeli została wybrana wersja 'matrix_transformations' to wykonaj algorytm dekrypcji Przestawienia Macierzowe z przykładu A
             elif encryption_type == 'matrix_transformations':
                 res = mt.decrypt(INPUT_DATA, KEY_DATA)
-            # Jeżeli została wybrana wersja 'matrix_transformations' to wykonaj algorytm dekrypcji Przestawienia Macierzowe z przykładu B
+            # Jeżeli została wybrana wersja 'matrix_cipher' to wykonaj algorytm dekrypcji Przestawienia Macierzowe z przykładu B
             else:
                 res = mc.decrypt(INPUT_DATA, KEY_DATA)
             # Podmiana tekstu zawierającego enkrypcję na dekrypcję
@@ -82,7 +123,9 @@ def init_window(w:int,h:int):
         # Nadajemy encryption_type alias algorytmu w celu późniejszego wyboru do enkcrpcji i dekrypcji
         encryption_type='fence'
         # Odblokowanie przycisku do enkrypcji
-        submit_button["state"] = "normal"
+        encrypt_button["state"] = "normal"
+        # Odblokowanie przycisku do dekrypcji
+        decrypt_button["state"] = "normal"
 
     # Wybór algorytmu Przestawienia Macierzowe z przykładu A
     def switch_matrix_transformations():
@@ -91,7 +134,9 @@ def init_window(w:int,h:int):
         # Nadajemy encryption_type alias algorytmu w celu późniejszego wyboru do enkcrpcji i dekrypcji
         encryption_type='matrix_transformations'
         # Odblokowanie przycisku do enkrypcji
-        submit_button["state"] = "normal"
+        encrypt_button["state"] = "normal"
+        # Odblokowanie przycisku do dekrypcji
+        decrypt_button["state"] = "normal"
 
     # Wybór algorytmu Przestawienia Macierzowe z przykładu B
     def switch_matrix_cipher():
@@ -100,7 +145,9 @@ def init_window(w:int,h:int):
         # Nadajemy encryption_type alias algorytmu w celu późniejszego wyboru do enkcrpcji i dekrypcji
         encryption_type='matrix_cipher'
         # Odblokowanie przycisku do enkrypcji
-        submit_button["state"] = "normal"
+        encrypt_button["state"] = "normal"
+        # Odblokowanie przycisku do dekrypcji
+        decrypt_button["state"] = "normal"
 
     # Deklaracja głównego okna aplikacji
     root = tk.Tk()
@@ -168,7 +215,7 @@ def init_window(w:int,h:int):
     input = tk.Text(content_frame,  height = 1, width = 32)
     input.pack(side=TOP)
     # Deklaracja etykieta dla pola na klucz do enkrypcji
-    key_label = tk.Label(content_frame, text = "Key (x-y-z...)")
+    key_label = tk.Label(content_frame, text = "Key")
     key_label.pack(
         side=TOP,
         ipadx=5,
@@ -184,8 +231,8 @@ def init_window(w:int,h:int):
     actions_frame.pack(side=BOTTOM, anchor= tk.SE,pady=(0,10))
     
     # Deklaracja przycisku zaczynający algorytm enkrypcji
-    submit_button = tk.Button(actions_frame, text="Encrypt", command=lambda:perform_algorithm())
-    submit_button.pack(
+    encrypt_button = tk.Button(actions_frame, text="Encrypt", command=lambda:perform_encryption())
+    encrypt_button.pack(
         side = RIGHT,
         ipadx=5,
         ipady=5,
@@ -194,7 +241,20 @@ def init_window(w:int,h:int):
         expand=True
     )
     # Zablokowanie do kliknięcia przycisku do enkrypcji
-    submit_button["state"] = "disabled"
+    encrypt_button["state"] = "disabled"
+    
+    # Deklaracja przycisku zaczynający algorytm enkrypcji
+    decrypt_button = tk.Button(actions_frame, text="Decrypt", command=lambda:perform_decryption())
+    decrypt_button.pack(
+        side = RIGHT,
+        ipadx=5,
+        ipady=5,
+        padx=(10,10),
+        pady=(0,10),
+        expand=True
+    )
+    # Zablokowanie do kliknięcia przycisku do enkrypcji
+    decrypt_button["state"] = "disabled"
     
     # Deklaracja przycisku wyjścia z programu
     exit_button = tk.Button(actions_frame, text="Exit", command=root.destroy)
