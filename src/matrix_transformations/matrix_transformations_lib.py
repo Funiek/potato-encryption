@@ -109,18 +109,29 @@ def decrypt(value:str,key:str):
         print(data_row)
         if inf in data_row:
             inf_count = data_row.count(inf)
-            for x in range(column_count-1,column_count-inf_count-1,-1):
-                print("X: "+str(x))
+            print(inf_count)
+            for x in range(inf_count):
                 data_row.pop()
-                data_row.insert(x-1,inf)
-        print(data_row)
+                data_row.insert(x+1,inf)
+                
+            temp_str = ''
+            for order in key_arr:
+                # Jeżeli litera jest różna niż inf
+                if str(data_row[column_count-int(order)]) != 'inf':
+                    # Dodaj do zmiennej przechowującą wynik kolejną literkę wybraną z wiersza względem klucza
+                    temp_str = temp_str + str(data_row[column_count-int(order)])
+                    
+            res = res + temp_str[::-1]
         
-        # Względem klucza...
-        for order in key_arr:
-            # Jeżeli litera jest różna niż inf
-            if str(data_row[int(order)-1]) != 'inf':
-                # Dodaj do zmiennej przechowującą wynik kolejną literkę wybraną z wiersza względem klucza
-                res = res + str(data_row[int(order)-1])            
+        else: 
+            # Względem klucza...
+            for order in key_arr:
+                # Jeżeli litera jest różna niż inf
+                if str(data_row[int(order)-1]) != inf:
+                    # Dodaj do zmiennej przechowującą wynik kolejną literkę wybraną z wiersza względem klucza
+                    res = res + str(data_row[int(order)-1])     
+                    
+        print(data_row)       
 
     # Zwróć wynik
     return res
