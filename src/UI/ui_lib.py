@@ -25,7 +25,7 @@ def init_window(w:int,h:int):
             res = fl.encrypt(INPUT_DATA, KEY_DATA)
         # Jeżeli została wybrana wersja 'matrix_transformations' to wykonaj algorytm ekrypcji Przestawienia Macierzowe z przykładu A
         elif encryption_type == 'matrix_transformations':
-            res = mt.encrypt_decrypt(INPUT_DATA, KEY_DATA)
+            res = mt.encrypt(INPUT_DATA, KEY_DATA)
         # Jeżeli została wybrana wersja 'matrix_transformations' to wykonaj algorytm ekrypcji Przestawienia Macierzowe z przykładu B
         else:
             res = mc.encrypt(INPUT_DATA, KEY_DATA)
@@ -45,7 +45,7 @@ def init_window(w:int,h:int):
                 res = fl.decrypt(INPUT_DATA, KEY_DATA)
             # Jeżeli została wybrana wersja 'matrix_transformations' to wykonaj algorytm dekrypcji Przestawienia Macierzowe z przykładu A
             elif encryption_type == 'matrix_transformations':
-                res = mt.encrypt_decrypt(INPUT_DATA, KEY_DATA)
+                res = mt.decrypt(INPUT_DATA, KEY_DATA)
             # Jeżeli została wybrana wersja 'matrix_transformations' to wykonaj algorytm dekrypcji Przestawienia Macierzowe z przykładu B
             else:
                 res = mc.decrypt(INPUT_DATA, KEY_DATA)
