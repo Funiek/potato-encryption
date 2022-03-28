@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import UI
 from UI.ui_remaster_lib import init_window
 
