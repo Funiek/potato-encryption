@@ -36,10 +36,10 @@ def encrypt(message: str, init_array: list, polynomial: list):
 
 
 def decrypt(message: str, init_array: list, polynomial: list):
-    encrypt_decrypt(message, init_array, polynomial, False)
+    encrypt_decrypt(message, init_array, polynomial)
 
 
-def encrypt_decrypt(message: str, init_array: list, polynomial: list, do_encrypt=True):
+def encrypt_decrypt(message: str, init_array: list, polynomial: list):
     ret = ''
     lfsr_length = 1
     random_stream, lfsr_array = generate_stream(lfsr_length, init_array, polynomial)
