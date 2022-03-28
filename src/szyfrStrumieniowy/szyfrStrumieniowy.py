@@ -55,6 +55,8 @@ def encrypt_decrypt(message: str, lfsr_array: list, do_encrypt=True):
                     j = 0
             else:
                 ret += str(' ')
+
+        ret_word = bin_to_letters(ret)
     else:
         for i in message:
             if i != ' ':
@@ -76,6 +78,6 @@ if __name__ == '__main__':
     lfsr_array = generate_stream(8, temp, [1, 3])
     # value #lfsr_array #flaga-1encrypt-0decrypt
     encrypted_msg, encrypted_msg_word = encrypt_decrypt("Hello", lfsr_array, 1)
-    print('encrypted_msg: ', encrypted_msg)
+    print('encrypted_msg: ', encrypted_msg, 'word: ', encrypted_msg_word)
     decrypted_msg, decrypted_msg_word = encrypt_decrypt(encrypted_msg, lfsr_array, 0)
     print('decrypted_msg: ', decrypted_msg, ' word: ', decrypted_msg_word)
