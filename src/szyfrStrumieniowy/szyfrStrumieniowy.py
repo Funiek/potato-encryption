@@ -88,13 +88,13 @@ def encrypt_decrypt(message:str, key: list, do_encrypt=True):
             else:
                 ret += str(' ')
         
-        ret = bin_to_letters(ret)
+        ret_word = bin_to_letters(ret)
 
 
 
 
 
-    return ret
+    return (ret,ret_word)
 
 
 
@@ -110,7 +110,7 @@ if __name__ == "__main__":
     temp = [0, 1, 0, 1,1,1]
 
     key = generate_stream(8, temp, [1, 3])
-
+    #value #key #flaga-1encrypt-0decrypt
     encrypted_msg = encrypt_decrypt("Hello", key, 1)
     print('encrypted_msg: ', encrypted_msg)
     decrypted_msg = encrypt_decrypt(encrypted_msg, key, 0)

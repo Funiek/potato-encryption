@@ -29,8 +29,6 @@ def xor(a, b):
     return ret
 
 
-print(__name__)
-if __name__ == "__main__":
-    temp = [0, 1, 0, 1,1,1]
 
-    print(generate_stream(10, temp, [1, 3]))
+temp = [0, 1, 0, 1,1,1]
+print(generate_stream(10, temp, [1, 3]))
