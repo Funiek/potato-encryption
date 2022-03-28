@@ -95,7 +95,7 @@ def init_window(w:int,h:int):
         "Rail Fence" : "fence",
         "Matrix Transformation" : "matrix_transformations",
         "Matrix Cipher" : "matrix_cipher",
-        "Random" : "stream_cipher",
+        "Random Stream Pattern" : "random_stream",
         "Stream Cipher" : "stream_cipher"
     }
 

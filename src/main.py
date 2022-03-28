@@ -1,5 +1,5 @@
 import UI
-from UI.ui_lib import init_window
+from UI.ui_remaster_lib import init_window
 
 
 def main():
