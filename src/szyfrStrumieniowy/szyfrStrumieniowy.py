@@ -37,10 +37,14 @@ def bin_to_letters(str: str):
 
 def encrypt_decrypt(message: str, init_array: list, polynomial: list, do_encrypt=True):
     ret = ''
+<<<<<<< HEAD
     ret_word = ''
     
     lfsr_length = 1
     random_stream, lfsr_array = generate_stream(lfsr_length, init_array, polynomial)
+=======
+    j = 0
+>>>>>>> c4ad6a747f881e077d4e7745a1ce5e69ba0f2e89
 
     if do_encrypt:
 
@@ -57,7 +61,7 @@ def encrypt_decrypt(message: str, init_array: list, polynomial: list, do_encrypt
                 random_stream, lfsr_array = generate_stream(lfsr_length, lfsr_array, polynomial)
 
             else:
-                ret += str(' ')
+                ret += ' '
 
         ret_word = bin_to_letters(ret)
     else:
@@ -71,7 +75,7 @@ def encrypt_decrypt(message: str, init_array: list, polynomial: list, do_encrypt
                 random_stream, lfsr_array = generate_stream(lfsr_length, lfsr_array, polynomial)
 
             else:
-                ret += str(' ')
+                ret += ' '
 
         ret_word = bin_to_letters(ret)
 
@@ -80,7 +84,7 @@ def encrypt_decrypt(message: str, init_array: list, polynomial: list, do_encrypt
 
 if __name__ == '__main__':
     temp = [0, 1, 0, 1, 1, 1]
-    lfsr_array = generate_stream(8, temp, [1, 3])
+    lfsr_array = generate_stream(8, temp, [1, 3])[0]
     # value #lfsr_array #flaga-1encrypt-0decrypt
     encrypted_msg, encrypted_msg_word = encrypt_decrypt("Hello", temp, [1, 3], 1)
     print('encrypted_msg: ', encrypted_msg, 'word: ', encrypted_msg_word)
