@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 
-from ..strumieniowyCiagLosowy.streamRandom import *
+import repackage
+
+repackage.up()
+
+from strumieniowyCiagLosowy.streamRandom import *
 
 import binascii
 
