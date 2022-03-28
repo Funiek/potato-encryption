@@ -8,6 +8,7 @@ from strumieniowyCiagLosowy.streamRandom import *
 
 import binascii
 
+
 def text_from_bits(bits, encoding='utf-8', errors='surrogatepass'):
     n = int(bits, 2)
     return int2bytes(n).decode(encoding, errors)
@@ -29,14 +30,19 @@ def bin_to_letters(str: str):
     return ret
 
 
+def encrypt(message: str, init_array: list, polynomial: list):
+    message = ' '.join(format(ord(x), 'b') for x in message)
+    encrypt_decrypt(message, init_array, polynomial)
+
+
+def decrypt(message: str, init_array: list, polynomial: list):
+    encrypt_decrypt(message, init_array, polynomial, False)
+
+
 def encrypt_decrypt(message: str, init_array: list, polynomial: list, do_encrypt=True):
     ret = ''
     lfsr_length = 1
     random_stream, lfsr_array = generate_stream(lfsr_length, init_array, polynomial)
-
-    if do_encrypt:
-        # convert message to bin format
-        message = ' '.join(format(ord(x), 'b') for x in message)
 
     for i in message:
         if i != ' ':
