@@ -32,11 +32,11 @@ def bin_to_letters(str: str):
 
 def encrypt(message: str, init_array: list, polynomial: list):
     message = ' '.join(format(ord(x), 'b') for x in message)
-    encrypt_decrypt(message, init_array, polynomial)
+    return encrypt_decrypt(message, init_array, polynomial)
 
 
 def decrypt(message: str, init_array: list, polynomial: list):
-    encrypt_decrypt(message, init_array, polynomial)
+    return encrypt_decrypt(message, init_array, polynomial)
 
 
 def encrypt_decrypt(message: str, init_array: list, polynomial: list):
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     temp = [0, 1, 0, 1, 1, 1]
     lfsr_array = generate_stream(8, temp, [1, 3])[0]
     # value #lfsr_array #flaga-1encrypt-0decrypt
-    encrypted_msg, encrypted_msg_word = encrypt_decrypt("Hello", temp, [1, 3], 1)
+    encrypted_msg, encrypted_msg_word = encrypt("Hello", temp, [1, 3])
     print('encrypted_msg: ', encrypted_msg, 'word: ', encrypted_msg_word)
-    decrypted_msg, decrypted_msg_word = encrypt_decrypt(encrypted_msg, temp, [1, 3], 0)
+    decrypted_msg, decrypted_msg_word = decrypt(encrypted_msg, temp, [1, 3])
     print('decrypted_msg: ', decrypted_msg, ' word: ', decrypted_msg_word)
