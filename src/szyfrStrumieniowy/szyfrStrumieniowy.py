@@ -61,7 +61,7 @@ if __name__ == '__main__':
     temp = [0, 1, 0, 1, 1, 1, 0]
     poly = [5,6]
     # value #lfsr_array #flaga-1encrypt-0decrypt
-    encrypted_msg, encrypted_msg_word = encrypt("Hell1111111111111111o", temp, poly)
+    encrypted_msg, encrypted_msg_word = encrypt("Hello", temp, poly)
     print('encrypted_msg: ', encrypted_msg, 'word: ', encrypted_msg_word)
     decrypted_msg, decrypted_msg_word = decrypt(encrypted_msg, temp, poly)
     print('decrypted_msg: ', decrypted_msg, ' word: ', decrypted_msg_word)

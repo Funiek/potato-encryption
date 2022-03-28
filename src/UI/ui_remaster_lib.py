@@ -1,4 +1,4 @@
-from glob import glob
+from ast import literal_eval
 import os
 import tkinter as tk
 from tkinter import BOTTOM, CENTER, LEFT, N, NW, RIGHT, TOP, Canvas, filedialog, Text
@@ -7,9 +7,11 @@ from tkinter.ttk import *
 import fence.fence_lib as fl
 import matrix_transformations.matrix_transformations_lib as mt
 import matrix2d.matrixCipher as mc
-
+import strumieniowyCiagLosowy.streamRandom as scl
+import szyfrStrumieniowy.szyfrStrumieniowy as ss
 
 output = None
+output2 = None
 content_frame = None
 content_frame2 = None
 content_frame3 = None
@@ -18,6 +20,8 @@ input = None
 input2 = None
 input3 = None
 v = None
+decrypt_button = None
+encrypt_button = None
 content_frame_flag = 1
 
 
@@ -32,67 +36,119 @@ def init_window(w: int, h: int):
     global input
     global input2
     global input3
+    global decrypt_button
+    global encrypt_button
     global v
     
     # Funkcja w której wykonywany jest algorytm i wywoływane jest okno z wynikiem
     def perform_encryption():
         global output
+        global output2
         global content_frame
         global content_frame2
         global content_frame3
         global key
         global input
+        global input2
+        global input3
         global v
-        # Przypisanie wejścia tekstu do enkrypcji do zmiennej
-        INPUT_DATA = input.get("1.0", "end-1c")
-        # Przypisanie klucza do zmiennej
-        KEY_DATA = key.get("1.0", "end-1c")
+        
         # Przypisanie zaznaczonego wyniku z radiobuttonów do zmiennej
         RADIOBUTTON_HANDLER = v.get()
         # Przygotowanie zmiennej na wynik
         res = ''
-
+        res2 = ''
         # Jeżeli została wybrana wersja 'fence' to wykonaj algorytm ekrypcji Rail Fence
         if RADIOBUTTON_HANDLER == 'fence':
+            # Przypisanie wejścia tekstu do enkrypcji do zmiennej
+            INPUT_DATA = input.get("1.0", "end-1c")
+            # Przypisanie klucza do zmiennej
+            KEY_DATA = key.get("1.0", "end-1c")
             res = fl.encrypt(INPUT_DATA, KEY_DATA)
         # Jeżeli została wybrana wersja 'matrix_transformations' to wykonaj algorytm ekrypcji Przestawienia Macierzowe z przykładu A
         elif RADIOBUTTON_HANDLER == 'matrix_transformations':
+            # Przypisanie wejścia tekstu do enkrypcji do zmiennej
+            INPUT_DATA = input.get("1.0", "end-1c")
+            # Przypisanie klucza do zmiennej
+            KEY_DATA = key.get("1.0", "end-1c")
             res = mt.encrypt(INPUT_DATA, KEY_DATA)
         # Jeżeli została wybrana wersja 'matrix_cipher' to wykonaj algorytm ekrypcji Przestawienia Macierzowe z przykładu B
-        else:
+        elif RADIOBUTTON_HANDLER == 'matrix_cipher':
+            # Przypisanie wejścia tekstu do enkrypcji do zmiennej
+            INPUT_DATA = input.get("1.0", "end-1c")
+            # Przypisanie klucza do zmiennej
+            KEY_DATA = key.get("1.0", "end-1c")
             res = mc.encrypt(INPUT_DATA, KEY_DATA)
+        elif RADIOBUTTON_HANDLER == 'random_stream':
+            INPUT_DATA = input.get("1.0", "end-1c")
+            INPUT_DATA_2 = input2.get("1.0", "end-1c")
+            INPUT_DATA_2 = literal_eval(INPUT_DATA_2)
+            INPUT_DATA_3 = input3.get("1.0", "end-1c")
+            INPUT_DATA_3 = literal_eval(INPUT_DATA_3)
+            ret1, ret2 = scl.generate_stream(int(INPUT_DATA),INPUT_DATA_2,INPUT_DATA_3)
+            res = ret1
+        elif RADIOBUTTON_HANDLER == 'stream_cipher':
+            INPUT_DATA = input.get("1.0", "end-1c")
+            INPUT_DATA_2 = input2.get("1.0", "end-1c")
+            INPUT_DATA_2 = literal_eval(INPUT_DATA_2)
+            INPUT_DATA_3 = input3.get("1.0", "end-1c")
+            INPUT_DATA_3 = literal_eval(INPUT_DATA_3)
+            res, res2 = ss.encrypt(str(INPUT_DATA),INPUT_DATA_2,INPUT_DATA_3)
         # Pokaż okno z wynikiem
         output.config(text=str(res))
+        if RADIOBUTTON_HANDLER == 'stream_cipher':
+            output2.config(text=str(res2))
 
     # Funkcja w której wykonywany jest algorytm i wywoływane jest okno z wynikiem
     def perform_decryption():
         global output
+        global output2
         global content_frame
         global content_frame2
         global content_frame3
         global key
         global input
+        global input2
+        global input3
         global v
-        # Przypisanie wejścia tekstu do enkrypcji do zmiennej
-        INPUT_DATA = input.get("1.0", "end-1c")
-        # Przypisanie klucza do zmiennej
-        KEY_DATA = key.get("1.0", "end-1c")
         # Przypisanie zaznaczonego wyniku z radiobuttonów do zmiennej
         RADIOBUTTON_HANDLER = v.get()
         # Przygotowanie zmiennej na wynik
         res = ''
-
+        res2 = ''
         # Jeżeli została wybrana wersja 'fence' to wykonaj algorytm ekrypcji Rail Fence
         if RADIOBUTTON_HANDLER == 'fence':
+            # Przypisanie wejścia tekstu do enkrypcji do zmiennej
+            INPUT_DATA = input.get("1.0", "end-1c")
+            # Przypisanie klucza do zmiennej
+            KEY_DATA = key.get("1.0", "end-1c")
             res = fl.decrypt(INPUT_DATA, KEY_DATA)
         # Jeżeli została wybrana wersja 'matrix_transformations' to wykonaj algorytm ekrypcji Przestawienia Macierzowe z przykładu A
         elif RADIOBUTTON_HANDLER == 'matrix_transformations':
+            # Przypisanie wejścia tekstu do enkrypcji do zmiennej
+            INPUT_DATA = input.get("1.0", "end-1c")
+            # Przypisanie klucza do zmiennej
+            KEY_DATA = key.get("1.0", "end-1c")
             res = mt.decrypt(INPUT_DATA, KEY_DATA)
         # Jeżeli została wybrana wersja 'matrix_cipher' to wykonaj algorytm ekrypcji Przestawienia Macierzowe z przykładu B
-        else:
+        elif RADIOBUTTON_HANDLER == 'matrix_cipher':
+            # Przypisanie wejścia tekstu do enkrypcji do zmiennej
+            INPUT_DATA = input.get("1.0", "end-1c")
+            # Przypisanie klucza do zmiennej
+            KEY_DATA = key.get("1.0", "end-1c")
             res = mc.decrypt(INPUT_DATA, KEY_DATA)
+        elif RADIOBUTTON_HANDLER == 'stream_cipher':
+            INPUT_DATA = input.get("1.0", "end-1c")
+            INPUT_DATA_2 = input2.get("1.0", "end-1c")
+            INPUT_DATA_2 = literal_eval(INPUT_DATA_2)
+            INPUT_DATA_3 = input3.get("1.0", "end-1c")
+            INPUT_DATA_3 = literal_eval(INPUT_DATA_3)
+            res, res2 = ss.decrypt(str(INPUT_DATA),INPUT_DATA_2,INPUT_DATA_3)
         # Pokaż okno z wynikiem
         output.config(text=str(res))
+        if RADIOBUTTON_HANDLER == 'stream_cipher':
+            output2.config(text=str(res2))
+
         
     def check_buttons():
         global output
@@ -123,7 +179,7 @@ def init_window(w: int, h: int):
                 init_content_frame3()
                 content_frame_flag = 3
             
-        elif RADIOBUTTON_HANDLER == "fence" or RADIOBUTTON_HANDLER == "matrix_transformations" or RADIOBUTTON_HANDLER == "matrix_transformations":
+        elif RADIOBUTTON_HANDLER == "fence" or RADIOBUTTON_HANDLER == "matrix_transformations" or RADIOBUTTON_HANDLER == "matrix_cipher":
             if content_frame2 is not None:
                 content_frame2.destroy()
             if content_frame3 is not None:
@@ -140,6 +196,8 @@ def init_window(w: int, h: int):
         global key
         global input
         global v
+        global decrypt_button
+        global encrypt_button
         # Ramka na pola do wypełnienia
         content_frame = tk.Frame(frame, bg="#ffffff")
         content_frame.pack(
@@ -179,6 +237,9 @@ def init_window(w: int, h: int):
         # Pole na tekst do enkrypcji
         output = tk.Label(content_frame,  height=1, width=32, bg="#e6e6e6")
         output.pack(side=TOP)
+        
+        encrypt_button.config(text = "Encrypt")
+        decrypt_button["state"] = "normal"
     
     def init_content_frame2():
         global output
@@ -188,6 +249,8 @@ def init_window(w: int, h: int):
         global input
         global input2
         global input3
+        global decrypt_button
+        global encrypt_button
         global v
         # Ramka na pola do wypełnienia
         content_frame2 = tk.Frame(frame, bg="#ffffff")
@@ -233,11 +296,15 @@ def init_window(w: int, h: int):
             pady=(10, 10)
         )
         # Pole na tekst do enkrypcji
-        output = tk.Label(content_frame2,  height=1, width=32, bg="#e6e6e6")
+        output = tk.Label(content_frame2,  height=1, width=48, bg="#e6e6e6")
         output.pack(side=TOP)
+        
+        encrypt_button.config(text = "Start")
+        decrypt_button["state"] = "disabled"
         
     def init_content_frame3():
         global output
+        global output2
         global content_frame
         global content_frame2
         global content_frame3
@@ -245,6 +312,8 @@ def init_window(w: int, h: int):
         global input
         global input2
         global input3
+        global decrypt_button
+        global encrypt_button
         global v
         # Ramka na pola do wypełnienia
         content_frame3 = tk.Frame(frame, bg="#ffffff")
@@ -259,7 +328,7 @@ def init_window(w: int, h: int):
             pady=(10, 10)
         )
         # Pole na tekst do enkrypcji
-        input = tk.Text(content_frame3,  height=1, width=32)
+        input = tk.Text(content_frame3,  height=1, width=64)
         input.pack(side=TOP)
         input_label2 = tk.Label(content_frame3, text="Init array", bg="#e6e6e6")
         input_label2.pack(
@@ -290,8 +359,22 @@ def init_window(w: int, h: int):
             pady=(10, 10)
         )
         # Pole na tekst do enkrypcji
-        output = tk.Label(content_frame3,  height=1, width=32, bg="#e6e6e6")
+        output = tk.Label(content_frame3,  height=4, width=64, bg="#e6e6e6")
         output.pack(side=TOP)
+        # Deklaracja etykieta dla pola na tekst do enkrypcji
+        output_label2 = tk.Label(content_frame3, text="Output 2 (Human Readable)", bg="#e6e6e6")
+        output_label2.pack(
+            side=TOP,
+            ipadx=5,
+            ipady=5,
+            pady=(10, 10)
+        )
+        # Pole na tekst do enkrypcji
+        output2 = tk.Label(content_frame3,  height=1, width=64, bg="#e6e6e6")
+        output2.pack(side=TOP)
+        
+        encrypt_button.config(text = "Encrypt")
+        decrypt_button["state"] = "normal"
         
             
     # Deklaracja głównego okna aplikacji
@@ -352,7 +435,7 @@ def init_window(w: int, h: int):
             pady=(0, 10)
         )
 
-    init_content_frame()
+    
 
     # Ramka na przyciski zaczynający enkrypcję i wyjście z programu
     actions_frame = tk.Frame(frame, bg="#ffffff")
@@ -396,5 +479,8 @@ def init_window(w: int, h: int):
         pady=(0, 10),
         expand=True
     )
+    
+    init_content_frame()
+    
     # Pętla do działania aplikacji okienkowej
     root.mainloop()
