@@ -8,12 +8,6 @@ from strumieniowyCiagLosowy.streamRandom import *
 
 import binascii
 
-
-def text_to_bits(text, encoding='utf-8', errors='surrogatepass'):
-    bits = bin(int(binascii.hexlify(text.encode(encoding, errors)), 16))[2:]
-    return bits.zfill(8 * ((len(bits) + 7) // 8))
-
-
 def text_from_bits(bits, encoding='utf-8', errors='surrogatepass'):
     n = int(bits, 2)
     return int2bytes(n).decode(encoding, errors)
@@ -37,47 +31,24 @@ def bin_to_letters(str: str):
 
 def encrypt_decrypt(message: str, init_array: list, polynomial: list, do_encrypt=True):
     ret = ''
-<<<<<<< HEAD
-    ret_word = ''
-    
     lfsr_length = 1
     random_stream, lfsr_array = generate_stream(lfsr_length, init_array, polynomial)
-=======
-    j = 0
->>>>>>> c4ad6a747f881e077d4e7745a1ce5e69ba0f2e89
 
     if do_encrypt:
-
         # convert message to bin format
-        message_bin = ' '.join(format(ord(x), 'b') for x in message)
-        print('message_bin', message_bin)
-        for i in message_bin:
-            if i != ' ':
+        message = ' '.join(format(ord(x), 'b') for x in message)
 
-                Ci = xor(int(i), random_stream[lfsr_length - 1])
-                ret += str(Ci)
+    for i in message:
+        if i != ' ':
+            Ci = xor(int(i), random_stream[lfsr_length - 1])
+            ret += str(Ci)
 
-                lfsr_length += 1
-                random_stream, lfsr_array = generate_stream(lfsr_length, lfsr_array, polynomial)
+            lfsr_length += 1
+            random_stream, lfsr_array = generate_stream(lfsr_length, lfsr_array, polynomial)
+        else:
+            ret += ' '
 
-            else:
-                ret += ' '
-
-        ret_word = bin_to_letters(ret)
-    else:
-        for i in message:
-            if i != ' ':
-                Ci = xor(int(i), random_stream[lfsr_length - 1])
-                ret += str(Ci)
-
-
-                lfsr_length += 1
-                random_stream, lfsr_array = generate_stream(lfsr_length, lfsr_array, polynomial)
-
-            else:
-                ret += ' '
-
-        ret_word = bin_to_letters(ret)
+    ret_word = bin_to_letters(ret)
 
     return ret, ret_word
 
