@@ -267,7 +267,7 @@ def init_window(w: int, h: int):
         # Pole na tekst do enkrypcji
         input = tk.Text(content_frame2,  height=1, width=32)
         input.pack(side=TOP)
-        input_label2 = tk.Label(content_frame2, text="Initial string", bg="#e6e6e6")
+        input_label2 = tk.Label(content_frame2, text="Init array", bg="#e6e6e6")
         input_label2.pack(
             side=TOP,
             ipadx=5,
